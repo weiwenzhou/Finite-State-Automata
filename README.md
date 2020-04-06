@@ -1,6 +1,7 @@
 # LIN 220 Project for Spring 2020
 
 Finite-state automata as Boolean matrix multiplication (Difficulty: 3, but can be done by a single person)
+
 This project is for the mathematically inclined only. Finite-state automata can be represented as a collection of matrices where all cells are either True or False. These are called Boolean matrices. The process of determining whether a string is accepted by an automaton is equivalent to a specific sequence of matrix multiplications.
 
 This project involves two components:
