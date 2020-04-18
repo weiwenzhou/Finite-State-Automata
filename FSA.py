@@ -59,11 +59,17 @@ class FSA:
         -------
         bool
         """
-        pass
+
+        result = self.get_initial_matrix()
+        for letter in word:
+            result = result @ self.get_letter_matrix(letter)
+
+        return result @ self.get_final_matrix() == 1
 
     def get_final_matrix(self):
         """ Returns the boolean matrix representation of the final states. """
-        pass
+        return np.array([1 if state in self.get_final_state() else 0
+                                    for state in self.get_states()])
 
     def get_final_state(self):
         """ Returns the set of final states. """
@@ -71,7 +77,8 @@ class FSA:
 
     def get_initial_matrix(self):
         """ Returns the boolean matrix representation of the initial state. """
-        pass
+        return np.array([1 if self.get_initial_state() == state else 0
+                                    for state in self.get_states()])
 
     def get_initial_state(self):
         """ Returns the intial state. """
@@ -79,7 +86,8 @@ class FSA:
 
     def get_letter_matrix(self, letter):
         """ Returns the boolean matrix representation of the given letter. """
-        pass
+        return np.array([[1 if letter in col else 0 for col in row]
+                                    for row in self.get_transitions_matrix()])
 
     def get_states(self):
         """ Returns the list of states. """
@@ -121,3 +129,9 @@ if __name__ == "__main__":
            }
     test = FSA(fsa["I"], fsa["F"], fsa["T"])
     print(test.get_transitions_matrix())
+    print(test.get_initial_matrix())
+    print(test.get_final_matrix())
+    print(test.get_letter_matrix('a'))
+    print(test.accepts('aab'))
+    print(test.accepts('aba'))
+    print(test.accepts('a'))
