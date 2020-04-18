@@ -19,9 +19,10 @@ class FSA:
         self.INITIAL = initial # obj
         self.FINAL = final # set
         self.TRANSITIONS = transitions # dict
-        self.STATES = transitions.keys() # list
+        self.STATES = list(transitions.keys()) # list
 
-        num = len(self.STATES.length)
+        num = len(self.STATES)
+        self.INDICES = {self.STATES[i]:i for i in range(num)} # dict
         self.MATRIX = np.array([["" for col in range(num)] for row in range(num)])
 
         # fill the matrix with arc_labels
@@ -30,7 +31,8 @@ class FSA:
         # "" : no edge from row-state to col-state
         for cur, edge in self.TRANSITIONS.items():
             for label, next in edge.items():
-                self.MATRIX[cur][next] += label
+                self.MATRIX[self.INDICES[cur]][self.INDICES[next]] += label
+
 
     def add_final_state(self, state):
         """ Adds state to the set of final states.
@@ -89,7 +91,7 @@ class FSA:
 
     def get_transitions_matrix(self):
         """ Returns a 2-D matrix representation of transitions """
-        pass
+        return self.MATRIX
 
     def remove_final_state(self, state):
         """ Removes state from the set of final states regardless if it is in the
@@ -110,8 +112,12 @@ class FSA:
             raise ValueError("Invalid state cannot be assigned as the inital state")
 
 if __name__ == "__main__":
-    fsaT = {"I": "x",
-           "F": {"y"},
-           "T": {}
+    fsa = {"I": "X",
+           "F": {"Y"},
+           "T": { "X": {"a": "Y"},
+                  "Y": {"b": "Z"},
+                  "Z": {"a": "X"}
+                    }
            }
-    test =
+    test = FSA(fsa["I"], fsa["F"], fsa["T"])
+    print(test.get_transitions_matrix())
