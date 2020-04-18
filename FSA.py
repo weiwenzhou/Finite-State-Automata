@@ -1,4 +1,4 @@
-from matrix import *
+import numpy as np
 
 class FSA:
     def __init__(self, initial=None, final=set(), transitions={}):
