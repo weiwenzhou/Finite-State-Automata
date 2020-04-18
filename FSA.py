@@ -13,7 +13,7 @@ class FSA:
             A set of final states
             default: empty set
         transitions: dict
-            dctionary of the form {arc_label: {current_state: next_state, }, }
+            dctionary of the form {current_state: {word: next_state, }, }
             default: empty dictionary
         """
         self.INITIAL = initial # obj
@@ -28,8 +28,8 @@ class FSA:
         # row represents the current_state
         # col represents the next_state
         # "" : no edge from row-state to col-state
-        for label, edge in self.TRANSITIONS.items():
-            for cur, next in edge.items():
+        for cur, edge in self.TRANSITIONS.items():
+            for label, next in edge.items():
                 self.MATRIX[cur][next] += label
 
     def add_final_state(self, state):
@@ -108,3 +108,10 @@ class FSA:
             self.INITIAL = state
         else:
             raise ValueError("Invalid state cannot be assigned as the inital state")
+
+if __name__ == "__main__":
+    fsaT = {"I": "x",
+           "F": {"y"},
+           "T": {}
+           }
+    test =
