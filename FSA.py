@@ -34,12 +34,24 @@ class FSA:
         """
         pass
 
+    def get_final_matrix(self):
+        """ Returns the boolean matrix representation of the final states. """
+        pass
+
     def get_final_state(self):
         """ Returns the set of final states. """
         pass
 
+    def get_initial_matrix(self):
+        """ Returns the boolean matrix representation of the initial state. """
+        pass
+
     def get_initial_state(self):
         """ Returns the intial state. """
+        pass
+
+    def get_letter_matrix(self, letter):
+        """ Returns the boolean matrix representation of the given letter. """
         pass
 
     def get_states(self):
