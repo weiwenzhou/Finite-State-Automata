@@ -1,3 +1,5 @@
+from matrix import *
+
 class FSA:
     def __init__(self, initial=None, final=set(), transitions={}):
         """ Class for deterministic finite-state automata.
@@ -18,6 +20,17 @@ class FSA:
         self.FINAL = final # set
         self.TRANSITIONS = transitions # dict
         self.STATES = transitions.keys() # list
+
+        num = len(self.STATES.length)
+        self.MATRIX = np.array([["" for col in range(num)] for row in range(num)])
+
+        # fill the matrix with arc_labels
+        # row represents the current_state
+        # col represents the next_state
+        # "" : no edge from row-state to col-state
+        for label, edge in self.TRANSITIONS.items():
+            for cur, next in edge.items():
+                self.MATRIX[cur][next] += label
 
     def add_final_state(self, state):
         """ Adds state to the set of final states.
