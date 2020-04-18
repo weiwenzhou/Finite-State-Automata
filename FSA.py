@@ -14,11 +14,23 @@ class FSA:
             dctionary of the form {arc_label: {current_state: next_state, }, }
             default: empty dictionary
         """
-        pass
+        self.INITIAL = initial # obj
+        self.FINAL = final # set
+        self.TRANSITIONS = transitions # dict
+        self.STATES = transitions.keys() # list
 
     def add_final_state(self, state):
-        """ Adds state to the set of final states. """
-        pass
+        """ Adds state to the set of final states.
+
+        Raises
+        ------
+        ValueError
+            When the given state is not in the list of states
+        """
+        if state in self.STATES:
+            self.FINAL.add(state)
+        else:
+            raise ValueError("Invalid state cannot be assigned as a final state")
 
     def accepts(self, word):
         """Test if FSA accepts the word.
@@ -40,7 +52,7 @@ class FSA:
 
     def get_final_state(self):
         """ Returns the set of final states. """
-        pass
+        return self.FINAL
 
     def get_initial_matrix(self):
         """ Returns the boolean matrix representation of the initial state. """
@@ -48,7 +60,7 @@ class FSA:
 
     def get_initial_state(self):
         """ Returns the intial state. """
-        pass
+        return self.INITIAL
 
     def get_letter_matrix(self, letter):
         """ Returns the boolean matrix representation of the given letter. """
@@ -56,11 +68,11 @@ class FSA:
 
     def get_states(self):
         """ Returns the list of states. """
-        pass
+        return self.STATES
 
     def get_transitions(self):
         """ Returns the dictionary of transitions. """
-        pass
+        return self.TRANSITIONS
 
     def get_transitions_matrix(self):
         """ Returns a 2-D matrix representation of transitions """
@@ -69,8 +81,17 @@ class FSA:
     def remove_final_state(self, state):
         """ Removes state from the set of final states regardless if it is in the
         set or not. """
-        pass
+        self.FINAL.discard(state)
 
     def set_initial_state(self, state):
-        """ Sets the initial state as the new state. """
-        pass
+        """ Sets the initial state as the new state.
+
+        Raises
+        ------
+        ValueError
+            When the given state is not in the list of states
+        """
+        if state in self.STATES:
+            self.INITIAL = state
+        else:
+            raise ValueError("Invalid state cannot be assigned as the inital state")
