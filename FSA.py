@@ -19,7 +19,18 @@ class FSA:
         self.INITIAL = initial # obj
         self.FINAL = final # set
         self.TRANSITIONS = transitions # dict
-        self.STATES = list(transitions.keys()) # list
+
+        temp_set_of_cur_states = list(transitions.keys()) # list
+        # (missing states with no outgoing edges)
+
+        temp_set_of_next_states = {next for edge in transitions.values()
+                                            for next in edge.values() }
+        # (missing states with no incoming edges)
+
+        temp_set_of_next_states.update(temp_set_of_cur_states)
+        # Union of the current states and next states
+
+        self.STATES = list(temp_set_of_next_states)
 
         num = len(self.STATES)
         self.INDICES = {self.STATES[i]:i for i in range(num)} # dict
