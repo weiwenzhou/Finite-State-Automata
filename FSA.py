@@ -42,6 +42,18 @@ class FSA:
         """ Returns the intial state. """
         pass
 
+    def get_states(self):
+        """ Returns the list of states. """
+        pass
+
+    def get_transitions(self):
+        """ Returns the dictionary of transitions. """
+        pass
+
+    def get_transitions_matrix(self):
+        """ Returns a 2-D matrix representation of transitions """
+        pass
+
     def remove_final_state(self, state):
         """ Removes state from the set of final states regardless if it is in the
         set or not. """
