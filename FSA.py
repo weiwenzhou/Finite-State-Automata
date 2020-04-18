@@ -2,7 +2,7 @@ import numpy as np
 
 class FSA:
     def __init__(self, initial=None, final=set(), transitions={}):
-        """ Class for deterministic finite-state automata.
+        """ Class for finite-state automata.
 
         Arugments
         ---------
@@ -23,8 +23,9 @@ class FSA:
         temp_set_of_cur_states = list(transitions.keys()) # list
         # (missing states with no outgoing edges)
 
-        temp_set_of_next_states = {next for edge in transitions.values()
-                                            for next in edge.values() }
+        temp_set_of_next_states = {state for edge in transitions.values()
+                                            for next in edge.values()
+                                            for state in next}
         # (missing states with no incoming edges)
 
         temp_set_of_next_states.update(temp_set_of_cur_states)
@@ -41,8 +42,9 @@ class FSA:
         # col represents the next_state
         # "" : no edge from row-state to col-state
         for cur, edge in self.TRANSITIONS.items():
-            for label, next in edge.items():
-                self.MATRIX[self.INDICES[cur]][self.INDICES[next]] += label
+            for label, states in edge.items():
+                for next in states:
+                    self.MATRIX[self.INDICES[cur]][self.INDICES[next]] += label
 
 
     def add_final_state(self, state):
@@ -75,7 +77,7 @@ class FSA:
         for letter in word:
             result = result @ self.get_letter_matrix(letter)
 
-        return result @ self.get_final_matrix() == 1
+        return result @ self.get_final_matrix() != 0
 
     def get_final_matrix(self):
         """ Returns the boolean matrix representation of the final states. """
@@ -139,10 +141,51 @@ if __name__ == "__main__":
                     }
            }
     test = FSA(fsa["I"], fsa["F"], fsa["T"])
+    print("Transition matrix")
     print(test.get_transitions_matrix())
+    print("Inital matrix")
     print(test.get_initial_matrix())
+    print("Final matrix")
     print(test.get_final_matrix())
+    print("'A' matrix")
     print(test.get_letter_matrix('a'))
-    print(test.accepts('aab'))
-    print(test.accepts('aba'))
-    print(test.accepts('a'))
+    print("aab: " + str(test.accepts('aab')))
+    print("aba: " + str(test.accepts('aba')))
+    print("a: " + str(test.accepts('a')))
+
+    fsaND = {"I": 0,
+           "F": {3},
+           "T": {
+                    0: {"a": {1, 2} },
+                    1: {"c": {1,3}, "b": {2},},
+                    2: {"b": {2}, "a": {3}}
+                }
+           }
+    testND = FSA(fsaND["I"], fsaND["F"], fsaND["T"])
+    print("Transition matrix")
+    print(testND.get_transitions_matrix())
+    print("Inital matrix")
+    print(testND.get_initial_matrix())
+    print("Final matrix")
+    print(testND.get_final_matrix())
+    print("'A' matrix")
+    print(testND.get_letter_matrix('a'))
+    print("aa: " + str(testND.accepts('aa')))
+    print("acbba: " + str(testND.accepts('acbba')))
+    print("abba: " + str(testND.accepts('abba')))
+    print("abab: " + str(testND.accepts('abab')))
+
+    I = testND.get_initial_matrix()
+    A = testND.get_letter_matrix('a')
+    B = testND.get_letter_matrix('b')
+    F = testND.get_final_matrix()
+
+    # print(A)
+    # print(B)
+    result = I
+    result = result @ A
+    result = result @ B
+    result = result @ B
+    result = result @ A
+    result = result @ F
+    print(result)
