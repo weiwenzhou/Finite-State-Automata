@@ -81,38 +81,18 @@ class FSA:
 
     def get_final_matrix(self):
         """ Returns the boolean matrix representation of the final states. """
-        return np.array([1 if state in self.get_final_state() else 0
-                                    for state in self.get_states()])
-
-    def get_final_state(self):
-        """ Returns the set of final states. """
-        return self.FINAL
+        return np.array([1 if state in self.FINAL else 0
+                                    for state in self.STATES])
 
     def get_initial_matrix(self):
         """ Returns the boolean matrix representation of the initial state. """
-        return np.array([1 if self.get_initial_state() == state else 0
-                                    for state in self.get_states()])
-
-    def get_initial_state(self):
-        """ Returns the intial state. """
-        return self.INITIAL
+        return np.array([1 if self.INITIAL == state else 0
+                                    for state in self.STATES])
 
     def get_letter_matrix(self, letter):
         """ Returns the boolean matrix representation of the given letter. """
         return np.array([[1 if letter in col else 0 for col in row]
-                                    for row in self.get_transitions_matrix()])
-
-    def get_states(self):
-        """ Returns the list of states. """
-        return self.STATES
-
-    def get_transitions(self):
-        """ Returns the dictionary of transitions. """
-        return self.TRANSITIONS
-
-    def get_transitions_matrix(self):
-        """ Returns a 2-D matrix representation of transitions """
-        return self.MATRIX
+                                    for row in self.MATRIX])
 
     def remove_final_state(self, state):
         """ Removes state from the set of final states regardless if it is in the
@@ -142,7 +122,7 @@ if __name__ == "__main__":
            }
     test = FSA(fsa["I"], fsa["F"], fsa["T"])
     print("Transition matrix")
-    print(test.get_transitions_matrix())
+    print(test.MATRIX)
     print("Inital matrix")
     print(test.get_initial_matrix())
     print("Final matrix")
@@ -164,7 +144,7 @@ if __name__ == "__main__":
            }
     testND = FSA(fsaND["I"], fsaND["F"], fsaND["T"])
     print("Transition matrix")
-    print(testND.get_transitions_matrix())
+    print(testND.MATRIX)
     print("Inital matrix")
     print(testND.get_initial_matrix())
     print("Final matrix")
