@@ -13,7 +13,7 @@ class FSA:
             A set of final states
             default: empty set
         transitions: dict
-            dctionary of the form {current_state: {word: next_state, }, }
+            dctionary of the form {current_state: {word: {next_state, }, }, }
             default: empty dictionary
         """
         self.INITIAL = initial # obj
@@ -50,17 +50,32 @@ class FSA:
 
 
     def add_final_state(self, state):
-        """ Adds state to the set of final states.
-
-        Raises
-        ------
-        ValueError
-            When the given state is not in the list of states
-        """
+        """ Adds state to the set of final states. Returns true if successful, false otherwise."""
         if state in self.STATES:
             self.FINAL.add(state)
+            return True
         else:
-            raise ValueError("Invalid state cannot be assigned as a final state")
+            return False
+
+    def add_transition(self, current_state, new_state, label):
+        """ Adds a transition to the FSA. Returns true if successful, false otherwise."""
+        if current_state in self.STATES and new_state in self.STATES:
+            # checking if the states are valid
+
+            # add to transitions dictionary
+            if self.TRANSITIONS.get(current_state).get(label):
+                # check if the current_state already has an edge with the label
+                self.TRANSITIONS.get(current_state).get(label).add(new_state)
+            else:
+                self.TRANSITIONS.get(current_state)[label] = {new_state}
+
+            # add to adjacency matrix
+            self.MATRIX[self.INDICES[current_state]][self.INDICES[next]] += label
+
+            return True
+        else:
+            return False
+
 
     def accepts(self, word):
         """Test if FSA accepts the word.
@@ -107,17 +122,12 @@ class FSA:
         self.FINAL.discard(state)
 
     def set_initial_state(self, state):
-        """ Sets the initial state as the new state.
-
-        Raises
-        ------
-        ValueError
-            When the given state is not in the list of states
-        """
+        """ Sets the initial state as the new state. Returns true if successful, false otherwise."""
         if state in self.STATES:
             self.INITIAL = state
+            return True
         else:
-            raise ValueError("Invalid state cannot be assigned as the inital state")
+            return False
 
 if __name__ == "__main__":
     fsa = {"I": "X",
