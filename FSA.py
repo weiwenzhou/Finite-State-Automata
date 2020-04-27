@@ -19,6 +19,8 @@ class FSA:
         self.INITIAL = initial # obj
         self.FINAL = final # set
         self.TRANSITIONS = transitions # dict
+        self.MEM_LETTER = {} # for memoization of letter boolean matrices
+
 
         temp_set_of_cur_states = list(transitions.keys()) # list
         # (missing states with no outgoing edges)
@@ -91,7 +93,12 @@ class FSA:
 
     def get_letter_matrix(self, letter):
         """ Returns the boolean matrix representation of the given letter. """
-        return np.array([[1 if letter in col else 0 for col in row]
+        if self.MEM_LETTER.get(letter):
+            # in the memoization dictionary
+            return self.MEM_LETTER.get(letter)
+        else:
+            # create from scratch
+            return np.array([[1 if letter in col else 0 for col in row]
                                     for row in self.MATRIX])
 
     def remove_final_state(self, state):
