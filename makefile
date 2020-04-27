@@ -1,5 +1,5 @@
 all:
-	python project.py
+	python FSA.py
 
 ssh:
 	ssh 449466a07c174bf983192944a274d53c@ssh.cocalc.com

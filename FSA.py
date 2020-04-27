@@ -152,6 +152,7 @@ if __name__ == "__main__":
     print("aab: " + str(test.accepts('aab')))
     print("aba: " + str(test.accepts('aba')))
     print("a: " + str(test.accepts('a')))
+    print("'':" + str(test.accepts('')))
 
     fsaND = {"I": 0,
            "F": {3},
@@ -174,18 +175,19 @@ if __name__ == "__main__":
     print("acbba: " + str(testND.accepts('acbba')))
     print("abba: " + str(testND.accepts('abba')))
     print("abab: " + str(testND.accepts('abab')))
+    print("'':" + str(testND.accepts('')))
 
-    I = testND.get_initial_matrix()
-    A = testND.get_letter_matrix('a')
-    B = testND.get_letter_matrix('b')
-    F = testND.get_final_matrix()
+    # I = testND.get_initial_matrix()
+    # A = testND.get_letter_matrix('a')
+    # B = testND.get_letter_matrix('b')
+    # F = testND.get_final_matrix()
 
     # print(A)
     # print(B)
-    result = I
-    result = result @ A
-    result = result @ B
-    result = result @ B
-    result = result @ A
-    result = result @ F
-    print(result)
+    # result = I
+    # result = result @ A
+    # result = result @ B
+    # result = result @ B
+    # result = result @ A
+    # result = result @ F
+    # print(result)
