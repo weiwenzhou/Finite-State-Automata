@@ -1,3 +1,12 @@
+""" Classes and methods for a finite-state automaton (FSA)
+
+A finite-state automaton is defined as a 5-tuple A := (A, Q, I, F, T) such that
+A - the English alphabet (a predefined finite, non-empty set)
+Q - the set of states
+I a proper subset of Q - the set of initial states
+F a proper subset of Q - the set of final states
+T a proper subset of QxAxQ - the set of transition relations
+"""
 import numpy as np
 
 class FSA:
