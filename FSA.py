@@ -33,12 +33,24 @@ class FSA:
             self.add_transition(*transition);
         self.MEM_LETTER = {} # for memoization of letter boolean matrices
 
+    def add_initial_state(self, state):
+        """ Adds state to the set of initial states.
+        Returns true if successful, false otherwise."""
+        if state in self.STATES:
+            self.INITIAL.add(state)
+            return True
+        else:
+            print(f"The {state} has not been added because it is not in the set of states.")
+            return False
+
     def add_final_state(self, state):
-        """ Adds state to the set of final states. Returns true if successful, false otherwise."""
+        """ Adds state to the set of final states.
+        Returns true if successful, false otherwise."""
         if state in self.STATES:
             self.FINAL.add(state)
             return True
         else:
+            print(f"The {state} has not been added because it is not in the set of states.")
             return False
 
     def add_state(self, state):
@@ -127,14 +139,6 @@ class FSA:
         """ Removes state from the set of final states regardless if it is in the
         set or not. """
         self.FINAL.discard(state)
-
-    def set_initial_state(self, state):
-        """ Sets the initial state as the new state. Returns true if successful, false otherwise."""
-        if state in self.STATES:
-            self.INITIAL = state
-            return True
-        else:
-            return False
 
 if __name__ == "__main__":
     from pprint import pprint
