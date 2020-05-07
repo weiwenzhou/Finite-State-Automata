@@ -10,7 +10,7 @@ T a proper subset of QxAxQ - the set of transition relations
 import numpy as np
 
 class FSA:
-    def __init__(self, initial=None, final=set(), transitions={}):
+    def __init__(self, initial=set(), final=set(), transitions={}):
         """ Class for finite-state automata.
 
         Arugments
@@ -25,7 +25,7 @@ class FSA:
             dctionary of the form {current_state: {word: {next_state, }, }, }
             default: empty dictionary
         """
-        self.INITIAL = initial # obj
+        self.INITIAL = initial # set
         self.FINAL = final # set
         self.TRANSITIONS = transitions # dict
         self.MEM_LETTER = {} # for memoization of letter boolean matrices
@@ -65,6 +65,10 @@ class FSA:
             return True
         else:
             return False
+
+    def add_state(self, state):
+        """ Adds a state into the set of states of the FSA. """
+        self.STATES.add(state)
 
     def add_transition(self, current_state, new_state, label):
         """ Adds a transition to the FSA. Returns true if successful, false otherwise."""
@@ -146,6 +150,8 @@ if __name__ == "__main__":
                   "Z": {"a": "X"}
                     }
            }
+
+    print(fsa)
     test = FSA(fsa["I"], fsa["F"], fsa["T"])
     print("Transition matrix")
     print(test.MATRIX)
@@ -155,33 +161,34 @@ if __name__ == "__main__":
     print(test.get_final_matrix())
     print("'A' matrix")
     print(test.get_letter_matrix('a'))
-    print("aab: " + str(test.accepts('aab')))
-    print("aba: " + str(test.accepts('aba')))
-    print("a: " + str(test.accepts('a')))
-    print("'':" + str(test.accepts('')))
+    print("aab: " + str(test.accepts('aab'))) # False
+    print("aba: " + str(test.accepts('aba'))) # False
+    print("a: " + str(test.accepts('a'))) # True
+    print("abaa: " + str(test.accepts('abaa'))) # True
+    print("'':" + str(test.accepts(''))) # False
 
-    fsaND = {"I": 0,
-           "F": {3},
-           "T": {
-                    0: {"a": {1, 2} },
-                    1: {"c": {1,3}, "b": {2},},
-                    2: {"b": {2}, "a": {3}}
-                }
-           }
-    testND = FSA(fsaND["I"], fsaND["F"], fsaND["T"])
-    print("Transition matrix")
-    print(testND.MATRIX)
-    print("Inital matrix")
-    print(testND.get_initial_matrix())
-    print("Final matrix")
-    print(testND.get_final_matrix())
-    print("'A' matrix")
-    print(testND.get_letter_matrix('a'))
-    print("aa: " + str(testND.accepts('aa')))
-    print("acbba: " + str(testND.accepts('acbba')))
-    print("abba: " + str(testND.accepts('abba')))
-    print("abab: " + str(testND.accepts('abab')))
-    print("'':" + str(testND.accepts('')))
+    # fsaND = {"I": 0,
+    #        "F": {3},
+    #        "T": {
+    #                 0: {"a": {1, 2} },
+    #                 1: {"c": {1,3}, "b": {2},},
+    #                 2: {"b": {2}, "a": {3}}
+    #             }
+    #        }
+    # testND = FSA(fsaND["I"], fsaND["F"], fsaND["T"])
+    # print("Transition matrix")
+    # print(testND.MATRIX)
+    # print("Inital matrix")
+    # print(testND.get_initial_matrix())
+    # print("Final matrix")
+    # print(testND.get_final_matrix())
+    # print("'A' matrix")
+    # print(testND.get_letter_matrix('a'))
+    # print(f"aa: Expected-True Result-{testND.accepts('aa')}")
+    # print(f"acbba: {testND.accepts('acbba')}")
+    # print(f"abba: {testND.accepts('abba')}")
+    # print(f"abab: {testND.accepts('abab')}")
+    # print(f"'': {testND.accepts('')}")
 
     # I = testND.get_initial_matrix()
     # A = testND.get_letter_matrix('a')
