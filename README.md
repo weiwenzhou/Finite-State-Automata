@@ -26,3 +26,16 @@ To install the dependencies run this in the project directory:
 ```
 ../LIN220-Project$ pip install -r requirements.txt
 ```
+
+## Project Details and Approach
+In this project, we replicated finite-state automaton as defined:
+
+A finite-state automaton is defined as a 5-tuple A := (A, Q, I, F, T) such that
+
+1. A - the English alphabet (a predefined finite, non-empty set)
+2. Q - the set of states
+3. I a proper subset of Q - the set of initial states
+4. F a proper subset of Q - the set of final states
+5. T a proper subset of QxAxQ - the set of transition relations
+
+A string, s, is recognized by A if and if there is a some run of A over s, in which the last component of the run is a final state. 
