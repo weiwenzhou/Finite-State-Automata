@@ -41,10 +41,7 @@ class FSA:
         temp_set_of_next_states.update(temp_set_of_cur_states)
         # Union of the current states and next states
 
-        self.STATES = list(temp_set_of_next_states)
-        self.STATES.sort()
-
-        num = len(self.STATES)
+        self.STATES = temp_set_of_next_states
 
     def add_final_state(self, state):
         """ Adds state to the set of final states. Returns true if successful, false otherwise."""
