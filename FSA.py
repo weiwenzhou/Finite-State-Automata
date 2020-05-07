@@ -10,7 +10,7 @@ T a proper subset of QxAxQ - the set of transition relations
 import numpy as np
 
 class FSA:
-    def __init__(self, initial=set(), final=set(), transitions={}):
+    def __init__(self, initial=set(), final=set(), transitions=[]):
         """ Class for finite-state automata.
 
         Arugments
@@ -21,27 +21,17 @@ class FSA:
         final: set
             A set of final states
             default: empty set
-        transitions: dict
-            dctionary of the form {current_state: {next_state: {arc_label, }, }, }
-            default: empty dictionary
+        transitions: list
+            list of tuples of the form (current_state, label, next_state)
+            default: []
         """
         self.INITIAL = initial # set
         self.FINAL = final # set
-        self.TRANSITIONS = transitions # dict
+        self.STATES = set() # set
+        self.TRANSITIONS = dict() # dict
+        for transition in transitions:
+            self.add_transition(*transition);
         self.MEM_LETTER = {} # for memoization of letter boolean matrices
-
-
-        temp_set_of_cur_states = list(transitions.keys()) # list
-        # (missing states with no outgoing edges)
-
-        temp_set_of_next_states = {next for edge in transitions.values()
-                                            for next in edge}
-        # (missing states with no incoming edges)
-
-        temp_set_of_next_states.update(temp_set_of_cur_states)
-        # Union of the current states and next states
-
-        self.STATES = temp_set_of_next_states
 
     def add_final_state(self, state):
         """ Adds state to the set of final states. Returns true if successful, false otherwise."""
@@ -55,7 +45,7 @@ class FSA:
         """ Adds a state into the set of states of the FSA. """
         self.STATES.add(state)
 
-    def add_transition(self, current_state, new_state, label):
+    def add_transition(self, current_state, label, new_state):
         """ Adds a transition to the FSA.
         Returns true if successful, false otherwise.
 
@@ -71,29 +61,19 @@ class FSA:
             sn
         }
         """
-        if current_state in self.STATES and new_state in self.STATES:
-            # checking if the states in the set of states
-            # check if arc_label is in the set of alphabet
+        # check if arc_label is in the set of alphabet
+        # add current_state and new_state to set of states
+        self.STATES.add(current_state)
+        self.STATES.add(new_state)
 
-            self.MATRIX[current_state] = self.MATRIX.get(source, {})
-            self.MATRIX[current_state][new_state] = self.MATRIX[current_state].get(new_state, {}).add(label)
-
-        # if current_state in self.STATES and new_state in self.STATES:
-        #     # checking if the states are valid
-        #
-        #     # add to transitions dictionary
-        #     if self.TRANSITIONS.get(current_state).get(label):
-        #         # check if the current_state already has an edge with the label
-        #         self.TRANSITIONS.get(current_state).get(label).add(new_state)
-        #     else:
-        #         self.TRANSITIONS.get(current_state)[label] = {new_state}
-        #
-        #     # add to adjacency matrix
-        #     self.MATRIX[self.INDICES[current_state]][self.INDICES[next]] += label
-        #
-        #     return True
-        # else:
-        #     return False
+        # add the transition to the transition dictionary
+        self.TRANSITIONS[current_state] = self.TRANSITIONS.get(current_state, {})
+        if self.TRANSITIONS[current_state].get(new_state):
+            # there is already an edge between the two states
+            self.TRANSITIONS[current_state][new_state].add(label)
+        else:
+            # no edges yet
+            self.TRANSITIONS[current_state][new_state] = {label}
 
 
     def accepts(self, word):
@@ -135,8 +115,6 @@ class FSA:
             return np.array([[1 if (letter in self.TRANSITIONS.get(cur,{}).get(next, {}))
                                 else 0 for next in self.STATES]
                                         for cur in self.STATES])
-            # return np.array([[1 if letter in col else 0 for col in row]
-            #                         for row in self.MATRIX])
 
     def remove_final_state(self, state):
         """ Removes state from the set of final states regardless if it is in the
@@ -156,10 +134,11 @@ if __name__ == "__main__":
 
     fsa = {"I": "X",
            "F": {"Y"},
-           "T": { "X": {"Y": {"a"}},
-                  "Y": {"Z": {"b"}},
-                  "Z": {"X": {"a"}}
-                    }
+           "T": [
+                ("X", "a", "Y"),
+                ("Y", "b", "Z"),
+                ("Z", "a", "X"),
+                ]
            }
 
     print(fsa)
