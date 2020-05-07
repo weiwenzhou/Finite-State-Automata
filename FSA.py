@@ -49,7 +49,7 @@ class FSA:
         """ Adds a transition to the FSA.
         Returns true if successful, false otherwise.
 
-        Matrix = {
+        TRANSITIONS = {
             s0: {
                     s0: {arc_labels0, arc_labels1},
                     s1: {...},
@@ -61,20 +61,27 @@ class FSA:
             sn
         }
         """
-        # check if arc_label is in the set of alphabet
-        # add current_state and new_state to set of states
-        self.STATES.add(current_state)
-        self.STATES.add(new_state)
+        # check if the label is in the set of alphabet
+        if label.isalpha() and len(label) == 1:
+            # the label is in the set of alphabet
+            # add current_state and new_state to set of states
+            self.STATES.add(current_state)
+            self.STATES.add(new_state)
 
-        # add the transition to the transition dictionary
-        self.TRANSITIONS[current_state] = self.TRANSITIONS.get(current_state, {})
-        if self.TRANSITIONS[current_state].get(new_state):
-            # there is already an edge between the two states
-            self.TRANSITIONS[current_state][new_state].add(label)
+            # add the transition to the transition dictionary
+            self.TRANSITIONS[current_state] = self.TRANSITIONS.get(current_state, {})
+            if self.TRANSITIONS[current_state].get(new_state):
+                # there is already an edge between the two states
+                self.TRANSITIONS[current_state][new_state].add(label)
+            else:
+                # no edges yet
+                self.TRANSITIONS[current_state][new_state] = {label}
+
+            return True
         else:
-            # no edges yet
-            self.TRANSITIONS[current_state][new_state] = {label}
-
+            # the label is not in the set of alphabet
+            print(f"The transition tuple ({current_state}, {label}, {new_state}) is not added because the label {label} is not in the set of alphabet")
+            return False
 
     def accepts(self, word):
         """Test if FSA accepts the word.
@@ -102,7 +109,7 @@ class FSA:
 
     def get_initial_matrix(self):
         """ Returns the boolean matrix representation of the initial state. """
-        return np.array([1 if self.INITIAL == state else 0
+        return np.array([1 if state in self.INITIAL else 0
                                     for state in self.STATES])
 
     def get_letter_matrix(self, letter):
@@ -132,12 +139,12 @@ class FSA:
 if __name__ == "__main__":
     from pprint import pprint
 
-    fsa = {"I": "X",
+    fsa = {"I": {"X"},
            "F": {"Y"},
            "T": [
                 ("X", "a", "Y"),
                 ("Y", "b", "Z"),
-                ("Z", "a", "X"),
+                ("Z", "a", "X")
                 ]
            }
 
