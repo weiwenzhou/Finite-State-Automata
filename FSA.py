@@ -42,20 +42,9 @@ class FSA:
         # Union of the current states and next states
 
         self.STATES = list(temp_set_of_next_states)
+        self.STATES.sort()
 
         num = len(self.STATES)
-        self.INDICES = {self.STATES[i]:i for i in range(num)} # dict
-        self.MATRIX = np.array([["" for col in range(num)] for row in range(num)])
-
-        # fill the matrix with arc_labels
-        # row represents the current_state
-        # col represents the next_state
-        # "" : no edge from row-state to col-state
-        for cur, edge in self.TRANSITIONS.items():
-            for next, labels in edge.items():
-                for label in labels:
-                    self.MATRIX[self.INDICES[cur]][self.INDICES[next]] += label
-
 
     def add_final_state(self, state):
         """ Adds state to the set of final states. Returns true if successful, false otherwise."""
@@ -166,6 +155,8 @@ class FSA:
             return False
 
 if __name__ == "__main__":
+    from pprint import pprint
+
     fsa = {"I": "X",
            "F": {"Y"},
            "T": { "X": {"Y": {"a"}},
@@ -176,9 +167,10 @@ if __name__ == "__main__":
 
     print(fsa)
     test = FSA(fsa["I"], fsa["F"], fsa["T"])
-    print(test.TRANSITIONS)
-    print("Transition matrix")
-    print(test.MATRIX)
+    print("Transitions")
+    pprint(test.TRANSITIONS, width=1)
+    print("STATES")
+    print(test.STATES)
     print("Inital matrix")
     print(test.get_initial_matrix())
     print("Final matrix")
@@ -190,6 +182,23 @@ if __name__ == "__main__":
     print("a: " + str(test.accepts('a'))) # True
     print("abaa: " + str(test.accepts('abaa'))) # True
     print("'':" + str(test.accepts(''))) # False
+
+    I = test.get_initial_matrix()
+    A = test.get_letter_matrix('a')
+    B = test.get_letter_matrix('b')
+    F = test.get_final_matrix()
+
+    print(A)
+    print(B)
+    result = I
+    result = result @ A
+    result = result @ B
+    result = result @ B
+    result = result @ A
+    result = result @ F
+
+
+
 
     # fsaND = {"I": 0,
     #        "F": {3},
