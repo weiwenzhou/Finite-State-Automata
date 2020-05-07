@@ -9,3 +9,20 @@ This project involves two components:
 2. Implement code that converts an automaton into its equivalent Boolean matrix representation, as well as an alternative to the .accepts method that uses Boolean matrix multiplication. As part of this, you will have to learn how matrices are handled in Python.
 
 Used techniques: memoization for matrix multiplication, the numpy package for representing matrices and matrix multiplication
+
+## Getting Started
+Clone this repo with either ssh or http
+```
+$ git clone git@github.com:wzhou2/LIN220-Project.git
+or
+$ git clone https://github.com/wzhou2/LIN220-Project.git
+```
+
+### Dependencies
+Python external libraries required to run this program:
+* Numpy - For matrix multiplication
+
+To install the dependencies run this in the project directory:
+```
+../LIN220-Project$ pip install -r requirements.txt
+```
