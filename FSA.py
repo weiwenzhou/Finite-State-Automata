@@ -136,8 +136,8 @@ class FSA:
         else:
             # create from scratch
             return np.array([[1 if (letter in self.TRANSITIONS.get(cur,{}).get(next, {}))
-                                else 0 for cur in self.STATES]
-                                        for next in self.STATES])
+                                else 0 for next in self.STATES]
+                                        for cur in self.STATES])
             # return np.array([[1 if letter in col else 0 for col in row]
             #                         for row in self.MATRIX])
 
@@ -182,23 +182,6 @@ if __name__ == "__main__":
     print("a: " + str(test.accepts('a'))) # True
     print("abaa: " + str(test.accepts('abaa'))) # True
     print("'':" + str(test.accepts(''))) # False
-
-    I = test.get_initial_matrix()
-    A = test.get_letter_matrix('a')
-    B = test.get_letter_matrix('b')
-    F = test.get_final_matrix()
-
-    print(A)
-    print(B)
-    result = I
-    result = result @ A
-    result = result @ B
-    result = result @ B
-    result = result @ A
-    result = result @ F
-
-
-
 
     # fsaND = {"I": 0,
     #        "F": {3},
