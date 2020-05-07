@@ -135,6 +135,11 @@ class FSA:
                                 else 0 for next in self.STATES]
                                         for cur in self.STATES])
 
+    def remove_initial_state(self, state):
+        """ Removes state from the set of final states regardless if it is in the
+        set or not. """
+        self.INITIAL.discard(state)
+
     def remove_final_state(self, state):
         """ Removes state from the set of final states regardless if it is in the
         set or not. """
