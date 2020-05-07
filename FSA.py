@@ -71,23 +71,44 @@ class FSA:
         self.STATES.add(state)
 
     def add_transition(self, current_state, new_state, label):
-        """ Adds a transition to the FSA. Returns true if successful, false otherwise."""
+        """ Adds a transition to the FSA.
+        Returns true if successful, false otherwise.
+
+        Matrix = {
+            s0: {
+                    s0: {arc_labels0, arc_labels1},
+                    s1: {...},
+                    ...,
+                    sn
+                },
+            s1: {...},
+            ...,
+            sn
+        }
+        """
         if current_state in self.STATES and new_state in self.STATES:
-            # checking if the states are valid
+            # checking if the states in the set of states
+            # check if arc_label is in the set of alphabet
 
-            # add to transitions dictionary
-            if self.TRANSITIONS.get(current_state).get(label):
-                # check if the current_state already has an edge with the label
-                self.TRANSITIONS.get(current_state).get(label).add(new_state)
-            else:
-                self.TRANSITIONS.get(current_state)[label] = {new_state}
+            self.MATRIX[current_state] = self.MATRIX.get(source, {})
+            self.MATRIX[current_state][new_state] = self.MATRIX[current_state].get(new_state, {}).add(label)
 
-            # add to adjacency matrix
-            self.MATRIX[self.INDICES[current_state]][self.INDICES[next]] += label
-
-            return True
-        else:
-            return False
+        # if current_state in self.STATES and new_state in self.STATES:
+        #     # checking if the states are valid
+        #
+        #     # add to transitions dictionary
+        #     if self.TRANSITIONS.get(current_state).get(label):
+        #         # check if the current_state already has an edge with the label
+        #         self.TRANSITIONS.get(current_state).get(label).add(new_state)
+        #     else:
+        #         self.TRANSITIONS.get(current_state)[label] = {new_state}
+        #
+        #     # add to adjacency matrix
+        #     self.MATRIX[self.INDICES[current_state]][self.INDICES[next]] += label
+        #
+        #     return True
+        # else:
+        #     return False
 
 
     def accepts(self, word):
