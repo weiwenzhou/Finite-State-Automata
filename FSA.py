@@ -22,7 +22,7 @@ class FSA:
             A set of final states
             default: empty set
         transitions: dict
-            dctionary of the form {current_state: {word: {next_state, }, }, }
+            dctionary of the form {current_state: {next_state: {arc_label, }, }, }
             default: empty dictionary
         """
         self.INITIAL = initial # set
@@ -34,9 +34,8 @@ class FSA:
         temp_set_of_cur_states = list(transitions.keys()) # list
         # (missing states with no outgoing edges)
 
-        temp_set_of_next_states = {state for edge in transitions.values()
-                                            for next in edge.values()
-                                            for state in next}
+        temp_set_of_next_states = {next for edge in transitions.values()
+                                            for next in edge}
         # (missing states with no incoming edges)
 
         temp_set_of_next_states.update(temp_set_of_cur_states)
@@ -53,8 +52,8 @@ class FSA:
         # col represents the next_state
         # "" : no edge from row-state to col-state
         for cur, edge in self.TRANSITIONS.items():
-            for label, states in edge.items():
-                for next in states:
+            for next, labels in edge.items():
+                for label in labels:
                     self.MATRIX[self.INDICES[cur]][self.INDICES[next]] += label
 
 
@@ -147,8 +146,11 @@ class FSA:
             return self.MEM_LETTER.get(letter)
         else:
             # create from scratch
-            return np.array([[1 if letter in col else 0 for col in row]
-                                    for row in self.MATRIX])
+            return np.array([[1 if (letter in self.TRANSITIONS.get(cur,{}).get(next, {}))
+                                else 0 for cur in self.STATES]
+                                        for next in self.STATES])
+            # return np.array([[1 if letter in col else 0 for col in row]
+            #                         for row in self.MATRIX])
 
     def remove_final_state(self, state):
         """ Removes state from the set of final states regardless if it is in the
@@ -166,14 +168,15 @@ class FSA:
 if __name__ == "__main__":
     fsa = {"I": "X",
            "F": {"Y"},
-           "T": { "X": {"a": "Y"},
-                  "Y": {"b": "Z"},
-                  "Z": {"a": "X"}
+           "T": { "X": {"Y": {"a"}},
+                  "Y": {"Z": {"b"}},
+                  "Z": {"X": {"a"}}
                     }
            }
 
     print(fsa)
     test = FSA(fsa["I"], fsa["F"], fsa["T"])
+    print(test.TRANSITIONS)
     print("Transition matrix")
     print(test.MATRIX)
     print("Inital matrix")
