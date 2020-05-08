@@ -61,6 +61,31 @@ M(I) times M(c0) times M(c1) time M(c2) times ... times M(cn) times M(F) = resul
 A string is accepted if and only if the result is nonzero. 
 
 ## Implementation
+To implement finite-state automata recognization with boolean matrix multiplication in Python, we will be using python classes, python sets for maintaining lists with no duplicates, python dictionaries, and numpy for matrix multiplication.
+
+We will be creating a class called FSA that serves as the finite-state automata.
+The class will contain the attributes:
+```
+INITIAL:     The set of initial states
+FINAL:       The set of final states
+STATES:      The set of states
+TRANSITIONS: The dictionary containing the edges for the FSA
+    This is the format for how the dictionary should look like with s0,s1,...,sn representing the states and arc_label is a single letter alphabetic character 
+    TRANSITIONS = {
+            s0: {
+                    s0: {arc_labels0, arc_labels1},
+                    s1: {...},
+                    ...,
+                    sn
+                },
+            s1: {...},
+            ...,
+            sn
+        }
+MEM_LETTER:  The dictionary containing the boolean letter matrices that have already been used for memoization
+```
+
+
 
 
 ## Problems Encountered and Solutions
