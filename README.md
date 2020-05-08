@@ -40,6 +40,26 @@ A finite-state automaton is defined as a 5-tuple A := (A, Q, I, F, T) such that
 
 A string, s, is recognized by A if and if there is a some run of A over s, in which the last component of the run is a final state. 
 
+We will do a run of A over s with boolean matrix multiplication.
+In order to do this:
+Given N is the number of elements in Q (the set of states).
+We will have matrices for the initial states, final states, and for each letter in the string s:
+
+* The matrix for the initial states is a 1 by N matrix with each column of the matrix representating  a state in the FSA. The value of an entry in the matrix is 1 if the state representating the column of the matrix is an initial state, otherwise it will be 0. 
+
+* The matrix for the final states is a N by 1 matrix with each row of the matrix representating a state in the FSA. The value of an entry in the matrix is a 1 if the state representating the row of the matrix is a final state, otherwise it will be 0.
+
+* For each letter in the string s, we will create a N by N matrix, with the rows representation current state and the columns representation the next state, filled with 1s and 0s. A position is a 1 if there is an edge going from row state to a column state, otherwise it will be 0.
+
+To do the run:
+Given a string s defined as "c0c1c2...cn" where c represents a letter in the string, we will multiply the matrices in this order.
+
+Note: M(I), M(F), and M(c) are the matrix representation as defined for the initial states, final states, and each letter in the string.
+
+M(I) times M(c0) times M(c1) time M(c2) times ... times M(cn) times M(F) = result.
+
+A string is accepted if and only if the result is nonzero. 
+
 ## Implementation
 
 
