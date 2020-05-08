@@ -65,6 +65,7 @@ To implement finite-state automata recognization with boolean matrix multiplicat
 
 We will be creating a class called FSA that serves as the finite-state automata.
 The class will contain the attributes:
+
 ```
 INITIAL:     The set of initial states
 FINAL:       The set of final states
@@ -87,7 +88,92 @@ MEM_LETTER:  The dictionary containing the boolean letter matrices that have
                 already been used for memoization
 ```
 
+For the constructor of the class:
+```
+FSA(initial, final, transition)
+Initial:     A collection of the initial states. (list, tuple, set, etc)
+Final:       A collection of the final states. (list, tuple, set, etc)
+Transitions: A collection of tuples of the form 
+                (current_state, label, next_state) representating the transition relations
 
+fsa = FSA(  {"X"}, 
+            {"Y"},
+            [   ("X", "a", "Y"),
+                ("Y", "b", "Z"),
+                ("Z", "a", "X")] )
+```
+
+### Methods
+
+##### FSA.accepts(self, word)
+Tests if there is valid run of the FSA over the word
+```
+fsa.accepts('aab') # returns False
+fsa.accepts('aba') # returns False
+fsa.accepts('a') # returns True
+fsa.accepts('abaa') # returns True
+fsa.accepts('') # returns False
+```
+
+##### FSA.add_state(self, state)
+Adds the state to the FSA
+```
+fsa.STATES returns {"X", "Y", "Z"}
+fsa.add_state("W")
+fsa.STATES returns {"X", "Y", "Z", "W"}
+```
+
+##### FSA.add_initial_state(self, state)
+Adds the state as an initial state of the FSA
+```
+fsa.INITIAL returns {"X"}
+fsa.add_initial_state("Y") returns True
+fsa.INITIAL returns {"X", "Y")
+fsa.add_initial_states("J") returns False
+    Also prints -> The state J has not been added because it is not in the set of states.
+```
+
+##### FSA.add_final_state(self, state)
+Adds the state as an initial state of the FSA
+```
+fsa.FINAL returns {"Y"}
+fsa.add_final_state("X") returns True
+fsa.FINAL returns {"Y", "X")
+fsa.add_final_states("J") returns False
+    Also prints: The state J has not been added because it is not in the set of states.
+```
+
+##### FSA.add_transition(self, current_state, label, new_state)
+Adds the transition from the current_state to the new_state with the label as its label
+```
+fsa.TRANSITIONS 
+    returns {   'X': {'Y': {'a'}},
+                'Y': {'Z': {'b'}},
+                'Z': {'X': {'a'}} }
+fsa.add_transition("X", "c", "X") returns True
+fsa.TRANSITIONS 
+    returns {   'X': {'X': {'c'}, 'Y': {'a'}},
+                'Y': {'Z': {'b'}},
+                'Z': {'X': {'a'}} }
+fsa.add_transition("X", "cc", "X") returns False
+    Also prints: The transition tuple (X, cc, X) is not added 
+                    because the label cc is not in the set of alphabet
+fsa.add_transition("X", "0", "X"} returns False
+    Also prints: The transition tuple (X, 0, X) is not added 
+                    because the label 0 is not in the set of alphabet
+```
+
+##### FSA.get_initial_matrix(self)
+```
+
+```
+##### FSA.get_final_matrix(self)
+##### FSA.get_letter_matrix(self, letter):
+
+##### FSA.remove_state(self, state)
+##### FSA.remove_initial_state(self, state)
+##### FSA.remove_final_state(self, state)
+##### FSA.remove_transition(self, current_state, label, new_state)
 
 
 ## Problems Encountered and Solutions
