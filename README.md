@@ -70,7 +70,8 @@ INITIAL:     The set of initial states
 FINAL:       The set of final states
 STATES:      The set of states
 TRANSITIONS: The dictionary containing the edges for the FSA
-    This is the format for how the dictionary should look like with s0,s1,...,sn representing the states and arc_label is a single letter alphabetic character 
+    This is the format for how the dictionary should look like with s0,s1,...,sn 
+    representing the states and arc_label is a single letter alphabetic character 
     TRANSITIONS = {
             s0: {
                     s0: {arc_labels0, arc_labels1},
@@ -82,7 +83,8 @@ TRANSITIONS: The dictionary containing the edges for the FSA
             ...,
             sn
         }
-MEM_LETTER:  The dictionary containing the boolean letter matrices that have already been used for memoization
+MEM_LETTER:  The dictionary containing the boolean letter matrices that have 
+                already been used for memoization
 ```
 
 
