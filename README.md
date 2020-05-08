@@ -39,3 +39,11 @@ A finite-state automaton is defined as a 5-tuple A := (A, Q, I, F, T) such that
 5. T a proper subset of QxAxQ - the set of transition relations
 
 A string, s, is recognized by A if and if there is a some run of A over s, in which the last component of the run is a final state. 
+
+## Implementation
+
+
+## Problems Encountered and Solutions
+
+
+## Short run through 
