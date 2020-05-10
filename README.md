@@ -163,12 +163,39 @@ fsa.add_transition("X", "0", "X"} returns False
                     because the label 0 is not in the set of alphabet
 ```
 
-##### FSA.get_initial_matrix(self)
+##### FSA.get_initial_matrix(self)*
+Returns the boolean initial matrix 
+```
+fsa.INITIAL returns {"X"}
+fsa.STATES returns {"X", "Y", "Z"}
+
+fsa.get_inital_matrix() returns [1, 0, 0]
+```
+##### FSA.get_final_matrix(self)*
+Returns the boolean final matrix
+```
+fsa.FINAL returns {"Y"}
+fsa.STATES returns {"X", "Y", "Z"}
+
+fsa.get_final_matrix() returns [0, 1, 0]
 ```
 
+##### FSA.get_letter_matrix(self, letter)*
+Returns the boolean matrix for the given letter
 ```
-##### FSA.get_final_matrix(self)
-##### FSA.get_letter_matrix(self, letter):
+fsa.TRANSITIONS 
+    returns {   'X': {'Y': {'a'}},
+                'Y': {'Z': {'b'}},
+                'Z': {'X': {'a'}} }
+fsa.STATES returns {"X", "Y", "Z"|
+fsa.get_letter_matrix("a") 
+    returns [ [0, 1, 0], # X
+              [0, 0, 0], # Y
+              [1, 0, 0]] # Z
+             # X  Y  Z
+```
+
+##### * : For these methods the output may differ base on the arrangement of the states.
 
 ##### FSA.remove_state(self, state)
 ##### FSA.remove_initial_state(self, state)
