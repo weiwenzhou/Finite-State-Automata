@@ -40,7 +40,7 @@ class FSA:
             self.INITIAL.add(state)
             return True
         else:
-            print(f"The {state} has not been added because it is not in the set of states.")
+            print(f"The state {state} has not been added because it is not in the set of states.")
             return False
 
     def add_final_state(self, state):
@@ -50,12 +50,15 @@ class FSA:
             self.FINAL.add(state)
             return True
         else:
-            print(f"The {state} has not been added because it is not in the set of states.")
+            print(f"The state {state} has not been added because it is not in the set of states.")
             return False
 
     def add_state(self, state):
         """ Adds a state into the set of states of the FSA. """
-        self.STATES.add(state)
+        if state not in self.STATES:
+            self.STATES.add(state)
+            self.MEM_LETTER.clear()
+            # the old memoize matrices no longer work with the numbers of states now
 
     def add_transition(self, current_state, label, new_state):
         """ Adds a transition to the FSA.
@@ -126,14 +129,17 @@ class FSA:
 
     def get_letter_matrix(self, letter):
         """ Returns the boolean matrix representation of the given letter. """
-        if self.MEM_LETTER.get(letter):
+        if letter in self.MEM_LETTER:
             # in the memoization dictionary
             return self.MEM_LETTER.get(letter)
         else:
             # create from scratch
-            return np.array([[1 if (letter in self.TRANSITIONS.get(cur,{}).get(next, {}))
+            matrix = np.array([[1 if (letter in self.TRANSITIONS.get(cur,{}).get(next, {}))
                                 else 0 for next in self.STATES]
                                         for cur in self.STATES])
+            # memoize
+            self.MEM_LETTER[letter] = matrix
+            return matrix
 
     def remove_initial_state(self, state):
         """ Removes state from the set of final states regardless if it is in the
@@ -167,13 +173,25 @@ if __name__ == "__main__":
     print(test.get_initial_matrix())
     print("Final matrix")
     print(test.get_final_matrix())
-    print("'A' matrix")
+    print("'a' matrix")
     print(test.get_letter_matrix('a'))
     print("aab: " + str(test.accepts('aab'))) # False
     print("aba: " + str(test.accepts('aba'))) # False
     print("a: " + str(test.accepts('a'))) # True
     print("abaa: " + str(test.accepts('abaa'))) # True
     print("'':" + str(test.accepts(''))) # False
+
+    pprint(test.MEM_LETTER)
+    test.add_state("W");
+    print(f"States: {test.STATES}")
+    print()
+    print("Inital matrix")
+    print(test.get_initial_matrix())
+    print("Final matrix")
+    print(test.get_final_matrix())
+    print("a: " + str(test.accepts('a'))) # True
+    pprint(test.MEM_LETTER)
+
 
     # fsaND = {"I": 0,
     #        "F": {3},
