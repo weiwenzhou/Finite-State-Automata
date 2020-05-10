@@ -106,7 +106,7 @@ fsa = FSA(  {"X"},
 ### Methods
 
 ##### FSA.accepts(self, word)
-Tests if there is valid run of the FSA over the word
+Tests if there is valid run of the FSA over the word.
 ```
 fsa.accepts('aab') # returns False
 fsa.accepts('aba') # returns False
@@ -116,7 +116,7 @@ fsa.accepts('') # returns False
 ```
 
 ##### FSA.add_state(self, state)
-Adds the state to the FSA
+Adds the state to the FSA.
 ```
 fsa.STATES returns {"X", "Y", "Z"}
 fsa.add_state("W")
@@ -124,7 +124,7 @@ fsa.STATES returns {"X", "Y", "Z", "W"}
 ```
 
 ##### FSA.add_initial_state(self, state)
-Adds the state as an initial state of the FSA
+Adds the state as an initial state of the FSA.
 ```
 fsa.INITIAL returns {"X"}
 fsa.add_initial_state("Y") returns True
@@ -134,7 +134,7 @@ fsa.add_initial_states("J") returns False
 ```
 
 ##### FSA.add_final_state(self, state)
-Adds the state as an initial state of the FSA
+Adds the state as an initial state of the FSA.
 ```
 fsa.FINAL returns {"Y"}
 fsa.add_final_state("X") returns True
@@ -144,7 +144,7 @@ fsa.add_final_states("J") returns False
 ```
 
 ##### FSA.add_transition(self, current_state, label, new_state)
-Adds the transition from the current_state to the new_state with the label as its label
+Adds the transition from the current_state to the new_state with the label as its label.
 ```
 fsa.TRANSITIONS 
     returns {   'X': {'Y': {'a'}},
@@ -164,7 +164,7 @@ fsa.add_transition("X", "0", "X"} returns False
 ```
 
 ##### FSA.get_initial_matrix(self)*
-Returns the boolean initial matrix 
+Returns the boolean initial matrix. 
 ```
 fsa.INITIAL returns {"X"}
 fsa.STATES returns {"X", "Y", "Z"}
@@ -172,7 +172,7 @@ fsa.STATES returns {"X", "Y", "Z"}
 fsa.get_inital_matrix() returns [1, 0, 0]
 ```
 ##### FSA.get_final_matrix(self)*
-Returns the boolean final matrix
+Returns the boolean final matrix.
 ```
 fsa.FINAL returns {"Y"}
 fsa.STATES returns {"X", "Y", "Z"}
@@ -181,13 +181,13 @@ fsa.get_final_matrix() returns [0, 1, 0]
 ```
 
 ##### FSA.get_letter_matrix(self, letter)*
-Returns the boolean matrix for the given letter
+Returns the boolean matrix for the given letter.
 ```
 fsa.TRANSITIONS 
     returns {   'X': {'Y': {'a'}},
                 'Y': {'Z': {'b'}},
                 'Z': {'X': {'a'}} }
-fsa.STATES returns {"X", "Y", "Z"|
+fsa.STATES returns {"X", "Y", "Z"}
 fsa.get_letter_matrix("a") 
     returns [ [0, 1, 0], # X
               [0, 0, 0], # Y
@@ -195,13 +195,68 @@ fsa.get_letter_matrix("a")
              # X  Y  Z
 ```
 
-##### * : For these methods the output may differ base on the arrangement of the states.
+###### * : For these methods the output may differ base on the arrangement of the states.
 
 ##### FSA.remove_state(self, state)
-##### FSA.remove_initial_state(self, state)
-##### FSA.remove_final_state(self, state)
-##### FSA.remove_transition(self, current_state, label, new_state)
+Removes a state from the fsa. This includes removing the given state from the set of initial states, the set of final states, and the set of transition relations.
+```
+fsa.STATES returns {"X", "Y", "Z"}
+fsa.TRANSITIONS 
+    returns {   'X': {'Y': {'a'}},
+                'Y': {'Z': {'b'}},
+                'Z': {'X': {'a'}} }
+fsa.INITIAL = {"X"}
+fsa.remove_state("X")
 
+fsa.STATES returns {"Y", "Z"}
+fsa.TRANSITIONS 
+    returns {   'Y': {'Z': {'b'}},
+                'Z': {}
+fsa.INITIAL = {}
+```
+
+
+##### FSA.remove_initial_state(self, state)
+Removes a state from the set of initial states.
+```
+fsa.INITIAL = {"X"}
+
+fsa.remove_initial_state("A")
+fsa.INITIAL = {"X"} # Note that nothing happens to INITIAL
+
+fsa.remove_initial_state("X")
+fsa.INITIAL = {}
+```
+
+##### FSA.remove_final_state(self, state)
+Removes a state from the set of final states.
+```
+fsa.FINAL = {"Y"}
+
+fsa.remove_final_state("A")
+fsa.FINAL = {"Y"} # Note that nothing happens to FINAL
+
+fsa.remove_final_state("Y")
+fsa.FINAL = {}
+```
+
+##### FSA.remove_transition(self, current_state, label, new_state)
+Removes a transition from the set of transition relations. 
+```
+fsa.TRANSITIONS 
+    returns {   'X': {'Y': {'a'}},
+                'Y': {'Z': {'b'}},
+                'Z': {'X': {'a'}} }
+fsa.remove_transition("X", "a", "Z"} 
+fsa.TRANSITIONS # Note that nothing happens to TRANSITIONS
+    returns {   'X': {'Y': {'a'}},
+                'Y': {'Z': {'b'}},
+                'Z': {'X': {'a'}} } 
+fsa.remove_transition("Z", "a", "X"} 
+fsa.TRANSITIONS 
+    returns {   'X': {'Y': {'a'}},
+                'Y': {'Z': {'b'}} }
+```
 
 ## Problems Encountered and Solutions
 
