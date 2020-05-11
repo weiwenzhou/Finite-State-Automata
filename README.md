@@ -277,24 +277,31 @@ Solution: At first, I made a seperate method call empty() that just returns FSA(
 Solution: Since testing the methods with unit tests wouldn't be effective as it will be the same as rewriting the method in the unit test, I decided to test those methods with an example that can be verify by looking at the code rather than try to do an elaborate way of predicting the result since sets are not ordered.
 
 ## Short run through/How to use
-Define your FSA in driver.
+This is the driver.py file
 ```
 # To define your FSA
 
 # You can play around with these variables. 
 # Note I and F should be a set and T is an array of tuples of the form (current_state, label, next_state)
-I = {"X"} # Initial 
+I = {"X"} # Initial
 F = {"Y"} # Final
 T = [   ("X", "a", "Y"),
         ("Y", "b", "Z"),
         ("Z", "a", "X")] # Transition relations
-        
+
 my_fsa = FSA(I, F, T)
+my_fsa1 = read_file("INPUT/example.txt")
 
-words_to_test = ["aab", "aba", "a", "abaa", ""] # should be [False, False, True, True, False]
+words_to_test = ["aab", "aba", "a", "abaa", ""]
+# should be [False, False, True, True, False]
 
+print("my_fsa")
 for word in words_to_test:
     print(f"'{word}': {my_fsa.accepts(word)}")
+
+print("my_fsa1 read from example.txt")
+for word in words_to_test:
+    print(f"'{word}': {my_fsa1.accepts(word)}")
     
 # You can also try the under methods to manipulate your fsa without having to change the variables are the start
 ```
