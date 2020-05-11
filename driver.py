@@ -28,13 +28,19 @@ T = [   ("X", "a", "Y"),
         ("Y", "b", "Z"),
         ("Z", "a", "X")] # Transition relations
 
-my_fsa = read_file("INPUT/example.txt")
+my_fsa = FSA(I, F, T)
+my_fsa1 = read_file("INPUT/example.txt")
 
 words_to_test = ["aab", "aba", "a", "abaa", ""]
 # should be [False, False, True, True, False]
 
+print("my_fsa")
 for word in words_to_test:
     print(f"'{word}': {my_fsa.accepts(word)}")
+
+print("my_fsa1 read from example.txt")
+for word in words_to_test:
+    print(f"'{word}': {my_fsa1.accepts(word)}")
 
 # You can also try the under methods to manipulate your fsa without having to
 # change the variables are the start
