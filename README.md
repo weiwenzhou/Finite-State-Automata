@@ -298,3 +298,15 @@ for word in words_to_test:
     
 # You can also try the under methods to manipulate your fsa without having to change the variables are the start
 ```
+
+#### This is a note for makefile
+```
+This runs the example
+$ make
+python driver.py 
+
+This runs the test file
+$ make test
+python -m pytest testFSA.py # for unit tests
+python testFSA.py # for the getters
+```
