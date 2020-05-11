@@ -1,5 +1,49 @@
 from FSA import *
 
+from hypothesis import given, settings
+import hypothesis.strategies as st
+
+# add
+def test_add_state():
+    """ start with an empty fsa and add a random state """
+    pass
+
+def test_add_initial_state():
+    pass
+
+def test_add_final_state():
+    pass
+
+def test_add_transition():
+    pass
+
+# get
+def test_get_initial_matrix():
+    pass
+
+def test_get_final_matrix():
+    pass
+
+def test_get_letter_matrix():
+    pass
+
+# remove
+def test_remove_state():
+    pass
+
+def test_remove_initial_state():
+    pass
+
+def test_remove_final_state():
+    pass
+
+def test_remove_transition():
+
+# accepts
+def test_accepts():
+    pass
+
+
 if __name__ == "__main__":
     from pprint import pprint
 
