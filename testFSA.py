@@ -94,24 +94,58 @@ def test_add_transition(transition):
 
 
 # get
+"""
+@settings(max_examples=100)
 def test_get_initial_matrix():
     pass
 
+@settings(max_examples=100)
 def test_get_final_matrix():
     pass
 
+@settings(max_examples=100)
 def test_get_letter_matrix():
     pass
+"""
 
 # remove
-def test_remove_state():
+@given(state = st.text(alphabet=string.ascii_letters, min_size=1, max_size=1))
+@settings(max_examples=100)
+def test_remove_state(state):
+    tester = random_fsa()
+    S = tester.STATES.copy()
+    T = tester.TRANSITIONS.copy()
+
+    tester.remove_state(state)
+
+    # not testing the remove methods here so we can assume they work as intended
+    tester.remove_initial_state(state)
+    tester.remove_final_state(state)
+    I = tester.INITIAL.copy()
+    F = tester.FINAL.copy()
+
+    if state in S:
+        S.remove(state)
+
+    if state in T:
+        del T[state]
+
+    for edges in T.values():
+        if state in edges:
+            del edges[state]
+
+    assert tester.STATES == S and tester.TRANSITIONS == T
+
+@given(state = st.text(alphabet=string.ascii_letters, min_size=1, max_size=1))
+@settings(max_examples=100)
+def test_remove_initial_state(state):
     pass
 
-def test_remove_initial_state():
+@given(state = st.text(alphabet=string.ascii_letters, min_size=1, max_size=1))
+@settings(max_examples=100)
+def test_remove_final_state(state):
     pass
 
-def test_remove_final_state():
-    pass
 
 def test_remove_transition():
     pass
@@ -124,6 +158,8 @@ def test_accepts():
 if __name__ == "__main__":
     from pprint import pprint
 
+    """TESTING BOOLEAN MATRICES methods """
+
     fsa = {"I": {"X"},
            "F": {"Y"},
            "T": [
@@ -133,25 +169,34 @@ if __name__ == "__main__":
                 ]
            }
 
-    print(fsa)
     test = FSA(fsa["I"], fsa["F"], fsa["T"])
-    print("Transitions")
-    pprint(test.TRANSITIONS, width=1)
+
+    print("CHECKING GETTERS")
     print("STATES")
     print(test.STATES)
+
+    print(f"Initials {test.INITIAL}")
     print("Inital matrix")
     print(test.get_initial_matrix())
+
     print("Final matrix")
+    print(f"Initials {test.FINAL}")
     print(test.get_final_matrix())
+
     print("'a' matrix")
+    print("Transitions")
+    pprint(test.TRANSITIONS, width=1)
     print(test.get_letter_matrix('a'))
+
+
+    print("\nTESTING ACCEPTS")
     print("aab: " + str(test.accepts('aab'))) # False
     print("aba: " + str(test.accepts('aba'))) # False
     print("a: " + str(test.accepts('a'))) # True
     print("abaa: " + str(test.accepts('abaa'))) # True
     print("'':" + str(test.accepts(''))) # False
 
-    """
+    print("\nTESTING memoization")
     pprint(test.MEM_LETTER)
     test.add_state("W");
     print(f"States: {test.STATES}")
@@ -162,14 +207,16 @@ if __name__ == "__main__":
     print(test.get_final_matrix())
     print("a: " + str(test.accepts('a'))) # True
     pprint(test.MEM_LETTER)
-    """
 
-    print("REMOVE TESTING")
+    """
+    print("\nREMOVE TESTING")
     print("REMOVE STATE")
     print(test.STATES)
     print(test.TRANSITIONS)
     print(test.INITIAL)
     print(test.FINAL)
+
+    # Uncomment to test
 
     # test.remove_state("X")
     # test.remove_state("Y")
@@ -185,4 +232,5 @@ if __name__ == "__main__":
     print(test.INITIAL)
     print(test.FINAL)
 
-    test.add_transition("X", 0, "X")
+    # test.add_transition("X", 0, "X")
+    """
