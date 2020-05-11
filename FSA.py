@@ -46,7 +46,7 @@ class FSA:
             self.INITIAL.add(state)
             return True
         else:
-            print(f"The state {state} has not been added because it is not in the set of states.")
+            print(f"The state {state} has not been added to inital because it is not in the set of states.")
             return False
 
     def add_final_state(self, state):
@@ -56,7 +56,7 @@ class FSA:
             self.FINAL.add(state)
             return True
         else:
-            print(f"The state {state} has not been added because it is not in the set of states.")
+            print(f"The state {state} has not been added to final because it is not in the set of states.")
             return False
 
     def add_state(self, state):
