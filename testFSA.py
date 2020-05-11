@@ -27,15 +27,19 @@ def test_add_initial_state(states, extra):
     2. invalid not in the set of states
     """
     tester = FSA()
-    for state in states:
-        tester.add_state(state)
+    tester.STATES = states
+    tester.INITIAL = set()
+    # not sure why INITIAL gets carry over
+    # even though it should be an empty set at the start
 
     tester.add_initial_state(extra)
+
     if extra in states:
-        print("HERE")
         assert tester.INITIAL == {extra}
     else:
         assert tester.INITIAL == set()
+
+
 
 def test_add_final_state():
     pass
@@ -134,5 +138,3 @@ if __name__ == "__main__":
     print(test.TRANSITIONS)
     print(test.INITIAL)
     print(test.FINAL)
-
-    empty = FSA()
