@@ -247,12 +247,12 @@ fsa.TRANSITIONS
     returns {   'X': {'Y': {'a'}},
                 'Y': {'Z': {'b'}},
                 'Z': {'X': {'a'}} }
-fsa.remove_transition("X", "a", "Z"} 
+fsa.remove_transition("X", "a", "Z") 
 fsa.TRANSITIONS # Note that nothing happens to TRANSITIONS
     returns {   'X': {'Y': {'a'}},
                 'Y': {'Z': {'b'}},
                 'Z': {'X': {'a'}} } 
-fsa.remove_transition("Z", "a", "X"} 
+fsa.remove_transition("Z", "a", "X") 
 fsa.TRANSITIONS 
     returns {   'X': {'Y': {'a'}},
                 'Y': {'Z': {'b'}} }
