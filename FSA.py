@@ -25,13 +25,19 @@ class FSA:
             list of tuples of the form (current_state, label, next_state)
             default: []
         """
-        self.INITIAL = initial # set
-        self.FINAL = final # set
+        self.INITIAL = set()
+        self.FINAL = set()
         self.STATES = set() # set
         self.TRANSITIONS = dict() # dict
         for transition in transitions:
             self.add_transition(*transition);
         self.MEM_LETTER = {} # for memoization of letter boolean matrices
+
+        # need to check if the given initial and final are valid
+        for state in initial:
+            self.add_initial_state(state)
+        for state in final:
+            self.add_final_state(state)
 
     def add_initial_state(self, state):
         """ Adds state to the set of initial states.
