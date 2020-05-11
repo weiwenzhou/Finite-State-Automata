@@ -10,56 +10,77 @@ def empty():
     """ Returns an empty fsa. """
     return FSA(set(), set(), [])
 
+def random_fsa():
+    """ Returns a random valid fsa. """
+    states = set()
+    for x in range(random.randint(0, 20)):
+        states.add(st.text(alphabet=string.ascii_letters, min_size=1))
+    length = len(states)
+    # pick initial
+    I = set(random.sample(states, random.randint(0, length)))
+    # pick final
+    F = set(random.sample(states, random.randint(0, length)))
+
+    # pick transition
+    T = []
+    for x in range(random.randint(0, length)):
+        cur = random.sample(states, 1)[0]
+        l = str(st.text(alphabet=string.ascii_letters, min_size=1))
+        next = random.sample(states, 1)[0]
+        T.append((cur, l, next))
+
+    return FSA(I, F, T)
+
 # add
 @given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10))
 @settings(max_examples=100)
 def test_add_state(states):
-    """ start with an empty fsa and add a random number of states. """
-    tester = empty()
+    """ Add a random number of states. """
+    tester = random_fsa()
+    orig = tester.STATES.copy()
+
     for state in states:
         tester.add_state(state)
+        orig.add(state)
 
-    assert tester.STATES == states
+    assert tester.STATES == orig
 
-@given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10),
-            extra = st.text(alphabet=string.ascii_letters, min_size=1))
+@given(state = st.text(alphabet=string.ascii_letters, min_size=1))
 @settings(max_examples=100)
-def test_add_initial_state(states, extra):
+def test_add_initial_state(state):
     """ start with an empty fsa with defined states.
 
     An initial state can be
     1. valid in the set of states
     2. invalid not in the set of states
     """
-    tester = empty()
-    tester.STATES = states
+    tester = random_fsa()
+    orig = tester.INITIAL.copy()
+    tester.add_initial_state(state)
+    if state in tester.STATES:
+        orig.add(state)
+    assert tester.INITIAL == orig
 
-    tester.add_initial_state(extra)
-
-    if extra in states:
-        assert tester.INITIAL == {extra}
-    else:
-        assert tester.INITIAL == set()
-
-
+@given(state = st.text(alphabet=string.ascii_letters, min_size=1))
+@settings(max_examples=100)
+def test_add_final_state(state):
+    """ similar to add initial state """
+    tester = random_fsa()
+    orig = tester.FINAL.copy()
+    tester.add_final_state(state)
+    if state in tester.STATES:
+        orig.add(state)
+    assert tester.FINAL == orig
 
 @given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10),
-            extra = st.text(alphabet=string.ascii_letters, min_size=1))
+            transition = st.tuples(st.text(alphabet=string.ascii_letters, min_size=1),
+                                   st.text(alphabet=string.ascii_letters, min_size=1),
+                                   st.text(alphabet=string.ascii_letters, min_size=1)))
 @settings(max_examples=100)
-def test_add_final_state(states, extra):
-    """ similar to add initial state """
+def test_add_transition(states, transition):
     tester = empty()
     tester.STATES = states
 
-    tester.add_final_state(extra)
-
-    if extra in states:
-        assert tester.FINAL == {extra}
-    else:
-        assert tester.FINAL == set()
-
-def test_add_transition():
-    pass
 
 # get
 def test_get_initial_matrix():
