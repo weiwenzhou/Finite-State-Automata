@@ -156,9 +156,28 @@ def test_remove_final_state(state):
         orig.remove(state)
     assert tester.FINAL == orig
 
+@given(transition = st.tuples(st.text(alphabet=string.ascii_letters, min_size=1, max_size=1),
+                              st.text(alphabet=string.ascii_letters+string.digits),
+                              st.text(alphabet=string.ascii_letters, min_size=1, max_size=1)))
+@settings(max_examples=100)
+def test_remove_transition(transition):
+    tester = random_fsa()
+    orig = tester.TRANSITIONS.copy()
 
-def test_remove_transition():
-    pass
+    cur, l, next = transition
+    tester.remove_transition(cur, l, next)
+
+    # l is a string already as defined
+    if l.isalpha() and len(l) == 1 and cur in orig and next in orig[cur] and l in orig[cur][next]:
+        # l is alphabet and length 1
+        # cur has an outgoing edge
+        # there is an edge from cur to next
+        # l is a label of that edge
+
+        # delete that transition
+        orig[cur][next].remove(l)
+
+    assert tester.TRANSITIONS == orig
 
 # accepts
 def test_accepts():
