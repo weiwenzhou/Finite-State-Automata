@@ -304,6 +304,100 @@ for word in words_to_test:
     print(f"'{word}': {my_fsa1.accepts(word)}")
     
 # You can also try the under methods to manipulate your fsa without having to change the variables are the start
+
+
+# Interactive way through the terminal to manipulate your fsa
+This is a sample run:
+What do you to do:
+Add     [A/add]
+Matrix  [M/matrix]
+Remove  [R/remove]
+View    [V/view]
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ A
+
+What do you want to add:
+1. Final state [F/final]
+2. Inital state[I/initial]
+3. A new state [S/state]
+4. A transition[T/transition]
+[B/back] to get back to the main menu
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ S
+Enter the state: W
+
+What do you want to add:
+1. Final state [F/final]
+2. Inital state[I/initial]
+3. A new state [S/state]
+4. A transition[T/transition]
+[B/back] to get back to the main menu
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ b
+
+What do you to do:
+Add     [A/add]
+Matrix  [M/matrix]
+Remove  [R/remove]
+View    [V/view]
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ V
+
+What do you want to view:
+1. Final states [F/final]
+2. Inital states[I/initial]
+3. states       [S/state]
+4. Transitions  [T/transition]
+[B/back] to get back to the main menu
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ S
+{'Y', 'W', 'X', 'Z'}
+
+What do you want to view:
+1. Final states [F/final]
+2. Inital states[I/initial]
+3. states       [S/state]
+4. Transitions  [T/transition]
+[B/back] to get back to the main menu
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ b
+
+What do you to do:
+Add     [A/add]
+Matrix  [M/matrix]
+Remove  [R/remove]
+View    [V/view]
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ M
+
+What do you want to view:
+1. Final matrix [F/final]
+2. Inital matrix[I/initial]
+3. Letter matrix[L/letter]
+[B/back] to get back to the main menu
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ I
+[0 0 1 0]
+
+What do you want to view:
+1. Final matrix [F/final]
+2. Inital matrix[I/initial]
+3. Letter matrix[L/letter]
+[B/back] to get back to the main menu
+[C/clear] to clear the screen
+[Q/quit] to quit
+$ 
+
+You can try other methods by reading the instruction after running the driver file.
+Note: Quiting does not save your fsa in it's new state
 ```
 
 #### This is a note for makefile
