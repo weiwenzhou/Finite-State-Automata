@@ -261,6 +261,19 @@ fsa.TRANSITIONS
 ```
 
 ## Problems Encountered and Solutions
+#### Adding new states
+Initially, I stored my transition relations in a 2D array that resemble a adjacency matrix. There were a lot of problems as a result of this decision. These include taking up O(n^2) space, a dictionary/list to maintain which row/column represents which state, and resizing array to add states. 
 
+Solution: I switch to using a dictionary to store my transition relations. This easily solve the issue of keep track of which row/column is which state, since the keys can be a state. In addition, this also resolve the issue with resizing and space. Since, it is a dictionary it does not have to initialize a spot for every possible transition relation in the fsa and only maintain the existing transition relations. 
+
+#### Testing with an empty FSA.
+Putting this inside a test method results in weird actions that I don't understand why it is occurring. Might have something to do with default values possibly?
+```
+tester = FSA()
+```
+Solution: At first, I made a seperate method call empty() that just returns FSA(set(), set(), []). I could have probably just done this in the test method rather than make an additional method. However, later on I switch to testing with a randomly generated fsa which did not have this issue appear.
+
+#### How to test the get methods? 
+Solution: Since testing the methods with unit tests wouldn't be effective as it will be the same as rewriting the method in the unit test, I decided to test those methods with an example that can be verify by looking at the code rather than try to do an elaborate way of predicting the result since sets are not ordered.
 
 ## Short run through 
