@@ -15,7 +15,7 @@ class FSA:
 
         Arugments
         ---------
-        initial: obj
+        initial: set
             An initial state
             default: None
         final: set
