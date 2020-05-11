@@ -151,6 +151,34 @@ class FSA:
         set or not. """
         self.FINAL.discard(state)
 
+    def remove_state(self, state):
+        """ Removes a state from the fsa. This includes removing the given state
+        from the set of initial states, the set of final states, and the set of
+        transition relations. """
+        if state in self.STATES:
+            # remove from states
+            self.STATES.discard(state)
+            # remove from initial
+            self.remove_initial_state(state)
+            # remove from final
+            self.remove_initial_state(state)
+
+            # remove from transitions
+            # outgoing edges
+            if state in self.TRANSITIONS:
+                # if there are transitions going out
+                self.TRANSITIONS.pop(state)
+            # incoming edges
+            for edges in self.TRANSITIONS.values():
+                if state in edges:
+                    edges.pop(state)
+
+    def remove_transition(self, current_state, label, new_state):
+        """ Removes a transition from the set of transition relations. """
+        # check if transition exists
+        if label in self.TRANSITIONS.get(current_state, {}).get(new_state, {}):
+            self.TRANSITIONS[current_state][new_state].discard(label)
+
 if __name__ == "__main__":
     from pprint import pprint
 
@@ -181,6 +209,7 @@ if __name__ == "__main__":
     print("abaa: " + str(test.accepts('abaa'))) # True
     print("'':" + str(test.accepts(''))) # False
 
+    """
     pprint(test.MEM_LETTER)
     test.add_state("W");
     print(f"States: {test.STATES}")
@@ -191,42 +220,25 @@ if __name__ == "__main__":
     print(test.get_final_matrix())
     print("a: " + str(test.accepts('a'))) # True
     pprint(test.MEM_LETTER)
+    """
 
+    print("REMOVE TESTING")
+    print("REMOVE STATE")
+    print(test.STATES)
+    print(test.TRANSITIONS)
+    print(test.INITIAL)
+    print(test.FINAL)
 
-    # fsaND = {"I": 0,
-    #        "F": {3},
-    #        "T": {
-    #                 0: {"a": {1, 2} },
-    #                 1: {"c": {1,3}, "b": {2},},
-    #                 2: {"b": {2}, "a": {3}}
-    #             }
-    #        }
-    # testND = FSA(fsaND["I"], fsaND["F"], fsaND["T"])
-    # print("Transition matrix")
-    # print(testND.MATRIX)
-    # print("Inital matrix")
-    # print(testND.get_initial_matrix())
-    # print("Final matrix")
-    # print(testND.get_final_matrix())
-    # print("'A' matrix")
-    # print(testND.get_letter_matrix('a'))
-    # print(f"aa: Expected-True Result-{testND.accepts('aa')}")
-    # print(f"acbba: {testND.accepts('acbba')}")
-    # print(f"abba: {testND.accepts('abba')}")
-    # print(f"abab: {testND.accepts('abab')}")
-    # print(f"'': {testND.accepts('')}")
+    # test.remove_state("X")
+    # test.remove_state("Y")
+    # test.remove_state("W") # boundary test
 
-    # I = testND.get_initial_matrix()
-    # A = testND.get_letter_matrix('a')
-    # B = testND.get_letter_matrix('b')
-    # F = testND.get_final_matrix()
+    # test.remove_transition("X","a", "Z")
+    # test.remove_transition("Z", "a", "X")
+    # test.remove_transition("W", "1", "V") # boundary test
 
-    # print(A)
-    # print(B)
-    # result = I
-    # result = result @ A
-    # result = result @ B
-    # result = result @ B
-    # result = result @ A
-    # result = result @ F
-    # print(result)
+    print("AFTER")
+    print(test.STATES)
+    print(test.TRANSITIONS)
+    print(test.INITIAL)
+    print(test.FINAL)
