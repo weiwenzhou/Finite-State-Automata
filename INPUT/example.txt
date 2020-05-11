@@ -1,0 +1,5 @@
+X
+Y
+X a Y
+Y b Z
+Z a X 
