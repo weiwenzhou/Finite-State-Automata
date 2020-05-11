@@ -73,21 +73,20 @@ def test_add_final_state(state):
     assert tester.FINAL == orig
 
 @given(transition = st.tuples(st.text(alphabet=string.ascii_letters, min_size=1, max_size=1),
-                              st.text(alphabet=string.ascii_letters, min_size=1, max_size=1),
+                              st.text(alphabet=string.ascii_letters+string.digits),
                               st.text(alphabet=string.ascii_letters, min_size=1, max_size=1)))
 @settings(max_examples=100)
 def test_add_transition(transition):
     tester = random_fsa()
-    print(tester.TRANSITIONS)
     orig = tester.TRANSITIONS.copy()
 
     cur, l, next = transition
     tester.add_transition(cur, l, next)
 
-    # l is length 1 and a string already as defined
-    if l.isalpha():
+    # l is a string already as defined
+    if l.isalpha() and len(l) == 1:
         orig[cur] = orig.get(cur, {})
-        temp = orig[cur].get(next, {})
+        temp = orig[cur].get(next, set())
         temp.add(l)
         orig[cur][next] = temp
 
