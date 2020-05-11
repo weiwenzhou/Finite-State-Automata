@@ -139,12 +139,22 @@ def test_remove_state(state):
 @given(state = st.text(alphabet=string.ascii_letters, min_size=1, max_size=1))
 @settings(max_examples=100)
 def test_remove_initial_state(state):
-    pass
+    tester = random_fsa()
+    orig = tester.INITIAL.copy()
+    tester.remove_initial_state(state)
+    if state in orig:
+        orig.remove(state)
+    assert tester.INITIAL == orig
 
 @given(state = st.text(alphabet=string.ascii_letters, min_size=1, max_size=1))
 @settings(max_examples=100)
 def test_remove_final_state(state):
-    pass
+    tester = random_fsa()
+    orig = tester.FINAL.copy()
+    tester.remove_final_state(state)
+    if state in orig:
+        orig.remove(state)
+    assert tester.FINAL == orig
 
 
 def test_remove_transition():
