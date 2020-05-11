@@ -180,9 +180,62 @@ def test_remove_transition(transition):
     assert tester.TRANSITIONS == orig
 
 # accepts
-def test_accepts():
-    pass
+@given(word = st.text(alphabet=string.ascii_letters))
+@settings(max_examples=100)
+def test_accepts(word):
+    # copy paste because parsing is easier with transition tuple
+    states = set()
+    for x in range(random.randint(0, 20)):
+        states.add("".join(random.choice(string.ascii_letters)))
+    length = len(states)
+    # pick initial
+    I = set(random.sample(states, random.randint(0, length)))
+    # pick final
+    F = set(random.sample(states, random.randint(0, length)))
 
+    # pick transition
+    T = []
+    # dictionary for parsing
+    trans = {}
+    for x in range(random.randint(0, length)):
+        cur = random.sample(states, 1)[0]
+        l = "".join(random.choice(string.ascii_letters))
+        next = random.sample(states, 1)[0]
+        T.append((cur, l, next))
+
+        trans[cur] = trans.get(cur, {})
+        temp = trans[cur].get(l, set())
+        temp.add(next)
+        trans[cur][l] = temp
+
+    tester = FSA(I, F, T)
+
+    if word == "":
+        # empty string condition
+        # true if initial and final contains a state that is the same
+        truth = True if tester.INITIAL.intersection(tester.FINAL) else False
+    else:
+        def check_initial():
+            """ Returns true if there is a valid path through the
+            transition dictionary for the word. """
+            def parse(start, word):
+                if word == "":
+                    return True
+                else:
+                    next = trans.get(cur, {}).get(word[0], {})
+                    while next:
+                        if parse(next.pop(), word[1:]):
+                            return True
+                    return False
+
+            I = tester.INITIAL.copy()
+            while I:
+                if parse(I.pop(), word):
+                    return True
+            return False
+        truth = check_initial()
+
+    assert tester.accepts(word) == truth
 
 if __name__ == "__main__":
     from pprint import pprint
