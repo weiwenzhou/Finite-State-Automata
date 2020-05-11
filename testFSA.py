@@ -1,15 +1,41 @@
 from FSA import *
 
+import random
+import string
 from hypothesis import given, settings
 import hypothesis.strategies as st
 
 # add
-def test_add_state():
-    """ start with an empty fsa and add a random state """
-    pass
+@given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10))
+@settings(max_examples=100)
+def test_add_state(states):
+    """ start with an empty fsa and add a random number of states. """
+    tester = FSA()
+    for state in states:
+        tester.add_state(state)
 
-def test_add_initial_state():
-    pass
+    assert tester.STATES == states
+
+@given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10),
+            extra = st.text(alphabet=string.ascii_letters, min_size=1))
+@settings(max_examples=100)
+def test_add_initial_state(states, extra):
+    """ start with an empty fsa with defined states.
+
+    An initial state can be
+    1. valid in the set of states
+    2. invalid not in the set of states
+    """
+    tester = FSA()
+    for state in states:
+        tester.add_state(state)
+
+    tester.add_initial_state(extra)
+    if extra in states:
+        print("HERE")
+        assert tester.INITIAL == {extra}
+    else:
+        assert tester.INITIAL == set()
 
 def test_add_final_state():
     pass
@@ -38,6 +64,7 @@ def test_remove_final_state():
     pass
 
 def test_remove_transition():
+    pass
 
 # accepts
 def test_accepts():
@@ -107,3 +134,5 @@ if __name__ == "__main__":
     print(test.TRANSITIONS)
     print(test.INITIAL)
     print(test.FINAL)
+
+    empty = FSA()
