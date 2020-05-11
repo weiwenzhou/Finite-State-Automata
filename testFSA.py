@@ -14,7 +14,7 @@ def random_fsa():
     """ Returns a random valid fsa. """
     states = set()
     for x in range(random.randint(0, 20)):
-        states.add(st.text(alphabet=string.ascii_letters, min_size=1))
+        states.add("".join(random.choice(string.ascii_letters)))
     length = len(states)
     # pick initial
     I = set(random.sample(states, random.randint(0, length)))
@@ -25,14 +25,14 @@ def random_fsa():
     T = []
     for x in range(random.randint(0, length)):
         cur = random.sample(states, 1)[0]
-        l = str(st.text(alphabet=string.ascii_letters, min_size=1))
+        l = "".join(random.choice(string.ascii_letters))
         next = random.sample(states, 1)[0]
         T.append((cur, l, next))
 
     return FSA(I, F, T)
 
 # add
-@given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10))
+@given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1, max_size=1), min_size = 1, max_size = 10))
 @settings(max_examples=100)
 def test_add_state(states):
     """ Add a random number of states. """
@@ -45,7 +45,7 @@ def test_add_state(states):
 
     assert tester.STATES == orig
 
-@given(state = st.text(alphabet=string.ascii_letters, min_size=1))
+@given(state = st.text(alphabet=string.ascii_letters, min_size=1, max_size=1))
 @settings(max_examples=100)
 def test_add_initial_state(state):
     """ start with an empty fsa with defined states.
@@ -61,7 +61,7 @@ def test_add_initial_state(state):
         orig.add(state)
     assert tester.INITIAL == orig
 
-@given(state = st.text(alphabet=string.ascii_letters, min_size=1))
+@given(state = st.text(alphabet=string.ascii_letters, min_size=1, max_size=1))
 @settings(max_examples=100)
 def test_add_final_state(state):
     """ similar to add initial state """
@@ -72,14 +72,26 @@ def test_add_final_state(state):
         orig.add(state)
     assert tester.FINAL == orig
 
-@given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10),
-            transition = st.tuples(st.text(alphabet=string.ascii_letters, min_size=1),
-                                   st.text(alphabet=string.ascii_letters, min_size=1),
-                                   st.text(alphabet=string.ascii_letters, min_size=1)))
+@given(transition = st.tuples(st.text(alphabet=string.ascii_letters, min_size=1, max_size=1),
+                              st.text(alphabet=string.ascii_letters, min_size=1, max_size=1),
+                              st.text(alphabet=string.ascii_letters, min_size=1, max_size=1)))
 @settings(max_examples=100)
-def test_add_transition(states, transition):
-    tester = empty()
-    tester.STATES = states
+def test_add_transition(transition):
+    tester = random_fsa()
+    print(tester.TRANSITIONS)
+    orig = tester.TRANSITIONS.copy()
+
+    cur, l, next = transition
+    tester.add_transition(cur, l, next)
+
+    # l is length 1 and a string already as defined
+    if l.isalpha():
+        orig[cur] = orig.get(cur, {})
+        temp = orig[cur].get(next, {})
+        temp.add(l)
+        orig[cur][next] = temp
+
+    assert tester.TRANSITIONS == orig
 
 
 # get
@@ -173,3 +185,5 @@ if __name__ == "__main__":
     print(test.TRANSITIONS)
     print(test.INITIAL)
     print(test.FINAL)
+
+    test.add_transition("X", 0, "X")
