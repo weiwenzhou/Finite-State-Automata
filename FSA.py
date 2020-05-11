@@ -83,7 +83,7 @@ class FSA:
         }
         """
         # check if the label is in the set of alphabet
-        if label.isalpha() and len(label) == 1:
+        if isinstance(label, str) and label.isalpha() and len(label) == 1:
             # the label is in the set of alphabet
             # add current_state and new_state to set of states
             self.STATES.add(current_state)
