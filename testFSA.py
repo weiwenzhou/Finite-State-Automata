@@ -5,12 +5,17 @@ import string
 from hypothesis import given, settings
 import hypothesis.strategies as st
 
+
+def empty():
+    """ Returns an empty fsa. """
+    return FSA(set(), set(), [])
+
 # add
 @given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10))
 @settings(max_examples=100)
 def test_add_state(states):
     """ start with an empty fsa and add a random number of states. """
-    tester = FSA()
+    tester = empty()
     for state in states:
         tester.add_state(state)
 
@@ -26,11 +31,8 @@ def test_add_initial_state(states, extra):
     1. valid in the set of states
     2. invalid not in the set of states
     """
-    tester = FSA()
+    tester = empty()
     tester.STATES = states
-    tester.INITIAL = set()
-    # not sure why INITIAL gets carry over
-    # even though it should be an empty set at the start
 
     tester.add_initial_state(extra)
 
@@ -41,8 +43,20 @@ def test_add_initial_state(states, extra):
 
 
 
-def test_add_final_state():
-    pass
+@given(states=st.sets(st.text(alphabet=string.ascii_letters, min_size=1), min_size = 1, max_size = 10),
+            extra = st.text(alphabet=string.ascii_letters, min_size=1))
+@settings(max_examples=100)
+def test_add_final_state(states, extra):
+    """ similar to add initial state """
+    tester = empty()
+    tester.STATES = states
+
+    tester.add_final_state(extra)
+
+    if extra in states:
+        assert tester.FINAL == {extra}
+    else:
+        assert tester.FINAL == set()
 
 def test_add_transition():
     pass
