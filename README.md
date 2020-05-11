@@ -20,7 +20,9 @@ $ git clone https://github.com/wzhou2/LIN220-Project.git
 
 ### Dependencies
 Python external libraries required to run this program:
-* Numpy - For matrix multiplication
+* Numpy:       For matrix multiplication
+* Pytest:      For testing
+* Hypothesis:  For testing
 
 To install the dependencies run this in the project directory:
 ```
